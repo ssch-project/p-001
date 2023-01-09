@@ -1,0 +1,35 @@
+body {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    overflow: hidden;
+}
+
+#slider > .image {
+    width: 40vmin;
+    height: 60vmin;
+    object-fit: cover;
+    object-position: 0% 50%;
+}
+
+#slider {
+    display: flex;
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    gap: 10vmin;
+    transform: translate(0%, -50%);
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+#main {
+    transform: translate(-25vmin, 0%);
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
