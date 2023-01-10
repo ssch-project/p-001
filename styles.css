@@ -28,8 +28,30 @@ body {
 }
 
 #main {
-    transform: translate(-25vmin, 0%);
+    transform: translate(0%, 0%);
     display: flex;
     width: 100vw;
     height: 100vh;
+}
+
+#container {
+    width: 40vmin;
+    height: 60vmin;
+    background-color: rgb(218, 228, 236);
+    position: absolute;
+    display: none;
+
+    /* Flex */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#imageFixed {
+    width: 40vmin;
+    height: 60vmin;
+    position: absolute;
+    display: none;
+    object-fit: cover;
+    z-index: 1000;
 }
