@@ -30,72 +30,93 @@ let mouseDown = false;
 let mouseMoved = 0;
 let prevMouseMoved = 0;
 let sliderMoveAllow = true;
+let imageFixedClickAllow = false;
+
+let currentImg = -1;
+let originalPos = {
+    top: 0,
+    left: 0
+}
 
 for (const i in images) {
     const img = images[i];
     img.onclick = function(){
+        if(!sliderMoveAllow){return;}
+        currentImg = i;
         sliderMoveAllow = false;
         
-        container.style.top = `${slider.getBoundingClientRect().top}px`;
-        container.style.left = `${img.getBoundingClientRect().left}px`;
-        container.style.width = "40vmin";
-        container.style.height = "60vmin";
+        originalPos.top = slider.getBoundingClientRect().top
+        originalPos.left = img.getBoundingClientRect().left
         container.style.display = "flex";
-        
-        imageFixed.style.objectPosition = `${mouseMoved}% 50%`;
-        imageFixed.style.top = `${slider.getBoundingClientRect().top}px`;
-        imageFixed.style.left = `${img.getBoundingClientRect().left}px`;
-        imageFixed.style.width = "40vmin";
-        imageFixed.style.height = "60vmin";
         imageFixed.src = img.src;
         imageFixed.style.display = "flex";
+
+        container.animate(
+            [
+                {top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin"},
+                {width: "100vw", height: "100vh", top: "0", left: "0"}
+            ],
+            {duration: 600, fill: "forwards", easing:"ease-in-out"}
+        );
+        imageFixed.animate(
+            [
+                {top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%`},
+                {height: "100vh", width:"50vw", top: "0", left: "0", objectPosition: `0% 50%`}
+            ],
+            {duration: 600, fill: "forwards", easing:"ease-in-out"}
+        );
         
         img.style.opacity = "0";
         for (let imgSel=0; imgSel < images.length; imgSel++) {
             images[imgSel].animate(
-                {transform: `translate(${imgSel<i? -500 : 500}%, 0%`},
+                [
+                    {transform: `translate(0%, 0%)`},
+                    {transform: `translate(${imgSel<i? -500 : 500}%, 0%`}
+                ],
                 {duration: 1200, fill: "forwards", easing:"ease-in-out"}
             );
         }
-        container.animate(
-            {width: "100vw", height: "100vh", top: "0", left: "0"},
-            {duration: 600, easing:"ease-in-out"}
-        )
-        imageFixed.animate(
-            {height: "100vh", width:"50vw", top: "0", left: "0", objectPosition: `0% 50%`},
-            {duration: 600, easing:"ease-in-out"}
-        )
         setTimeout(() => {
-            Object.assign(container.style,{width: "100vw", height: "100vh", top: "0", left: "0"});
-            Object.assign(imageFixed.style,{height: "100vh", width:"50vw", top: "0", left: "0", objectPosition: `0% 50%`});
+            imageFixedClickAllow = true;
         }, 600);
     }
 }
 
 imageFixed.onclick = function() {
-    for (const img of images) {
-        img.style.opacity = "1";
-    }
-
+    if(!imageFixedClickAllow) {return;}
+    imageFixedClickAllow = false
     container.animate(
-        {top:"-100vh"},
-        {duration: 600, easing:"ease-in-out"}
+        [
+            {width: "100vw", height: "100vh", top: "0", left: "0"},
+            {top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin"}
+        ],
+        {duration: 600, fill: "forwards", easing:"ease-in-out"}
     );
     imageFixed.animate(
-        {top:"-100vh"},
-        {duration: 600, easing:"ease-in-out"}
+        [
+            {height: "100vh", width:"50vw", top: "0", left: "0", objectPosition: `0% 50%`},
+            {top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%`}
+        ],
+        {duration: 600, fill: "forwards", easing:"ease-in-out"}
     );
     setTimeout(() => {
         container.style.display = 'none';
-        imageFixed.style.display = 'none';
-        for (const i of images) {
-            i.animate(
-                {transform: `translate(${-mouseMoved}%, 0%)`},
+        for (let imgSel=0; imgSel < images.length; imgSel++) {
+            images[imgSel].animate(
+                [
+                    {transform: `translate(${imgSel<currentImg? -500 : 500}%, 0%`},
+                    {transform: `translate(0%, 0%)`}
+                ],
                 {duration: 600, fill: "forwards", easing:"ease-in-out"}
             )
         }
-        sliderMoveAllow = true;
     }, 600);
+
+    setTimeout(() => {
+        images[currentImg].style.opacity = "1";
+        imageFixed.style.display = 'none';
+        sliderMoveAllow = true;
+    }, 1200);
 }
 
 window.onmousedown = e => {
@@ -110,7 +131,7 @@ window.onmouseup = e => {
 
 window.onmousemove = e => {
     if(!mouseDown || !sliderMoveAllow) {return;}
-
+    console.log(mouseMoved);
     const mouseMove = parseFloat(mouseDownAt) - e.clientX;
     
     mouseMoved = clamp(0, mouseMove / maxDelta * 100 + prevMouseMoved, 100, 
