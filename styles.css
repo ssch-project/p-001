@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
 body {
     background-color: black;
     height: 100vh;
     width: 100vw;
     margin: 0;
     overflow: hidden;
+    font-family: 'Merriweather', serif;
 }
 
 #slider > .image {
@@ -45,7 +48,7 @@ body {
     /* Flex */
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 998;
 }
 
 #imageFixed {
@@ -55,4 +58,42 @@ body {
     display: none;
     object-fit: cover;
     z-index: 1000;
+}
+
+.noSelect {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+#textArea {
+    display: none; /* flex */
+    overflow: hidden;
+    position: absolute;
+    height: 100vh;
+    width: 50vw;
+    left: 50vw;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#textDisplay {
+    position: relative;
+    display: none; /* block */
+    overflow: hidden;
+    color: black;
+    padding: 10vmin;
+    font-size: 3vmin;
+}
+
+#textDisplayTitle {
+    text-decoration: underline;
+    font-size: 8vmin !important;
+}
+
+#textDisplayContent {
+    font-size: 3.75vmin !important;
 }
