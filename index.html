@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,28 +9,33 @@
 
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div style="margin: 2vmin;"><a href="https://github.com/ssch-project/p-001" target="_blank" class="noSelect" style="color: rgba(255, 255, 255, 0.151); font-size: 3vmin;">NTNK - 8A1</a></div>
-    <div id="container"></div>
-    <img id="imageFixed" class="noSelect" draggable="false">
-    <div id="textArea">
-        <div id="textDisplay">
-            <!-- content here -->
-            <h1 id="textDisplayTitle">Section Title</h1>
-            <div id="textDisplayContent"></div>
+    <div style="margin: 2vmin;"><a href="https://github.com/ssch-project/p-001" target="_blank" class="noSelect"
+            style="color: rgba(255, 255, 255, 0.151); font-size: 3vmin;">NTNK - 8A1</a></div>
+    <div style="position: absolute; top: 0; left: 0;">
+        <div id="container"></div>
+        <img id="imageFixed" class="noSelect" draggable="false">
+        <div id="textArea">
+            <div id="textDisplay">
+                <!-- content here -->
+                <h1 id="textDisplayTitle">Section Title</h1>
+                <div id="textDisplayContent"></div>
+            </div>
+        </div>
+        <div id="main">
+            <div id="slider">
+                <img class="image noSelect" draggable="false" src="assets/1.jpg">
+                <img class="image noSelect" draggable="false" src="assets/2.jpg">
+                <img class="image noSelect" draggable="false" src="assets/3.jpg">
+                <img class="image noSelect" draggable="false" src="assets/4.jpg">
+                <img class="image noSelect" draggable="false" src="assets/5.jpg">
+                <img class="image noSelect" draggable="false" src="assets/6.jpg">
+            </div>
         </div>
     </div>
-    <div id="main">
-        <div id="slider">
-            <img class="image noSelect" draggable="false" src="assets/1.jpg">
-            <img class="image noSelect" draggable="false" src="assets/2.jpg">
-            <img class="image noSelect" draggable="false" src="assets/3.jpg">
-            <img class="image noSelect" draggable="false" src="assets/4.jpg">
-            <img class="image noSelect" draggable="false" src="assets/5.jpg">
-            <img class="image noSelect" draggable="false" src="assets/6.jpg">
-        </div>
-    </div>
-    
+
     <script src="script.js"></script>
 </body>
+
 </html>
