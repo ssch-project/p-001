@@ -5,6 +5,9 @@ class SECTION {
     }
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+
+
 const slider = document.querySelector("#slider"),
     images = slider.querySelectorAll(".image"),
     container = document.querySelector("#container"),
@@ -63,13 +66,36 @@ for (const i in images) {
             ],
             { duration: 600, fill: "forwards", easing: "ease-in-out" }
         );
-        imageFixed.animate(
-            [
-                { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%` },
-                { height: "100vh", width: "50vw", top: "0", left: "0", objectPosition: `0% 50%` }
-            ],
-            { duration: 600, fill: "forwards", easing: "ease-in-out" }
-        );
+
+        if (urlParams.get('gallery')==1){
+            imageFixed.animate(
+                [
+                    { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%` },
+                    { height: "100vh", width: "100vw", top: "0", left: "0", objectPosition: `0% 50%` }
+                ],
+                { duration: 600, fill: "forwards", easing: "ease-in-out" }
+            );
+        } else {
+            imageFixed.animate(
+                [
+                    { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%` },
+                    { height: "100vh", width: "50vw", top: "0", left: "0", objectPosition: `0% 50%` }
+                ],
+                { duration: 600, fill: "forwards", easing: "ease-in-out" }
+            );
+            setTimeout(() => {
+                textArea.style.display = "flex";
+                textDisplay.style.display = "block";
+                textArea.animate(
+                    [
+                        { clipPath: `inset(100vh)` },
+                        { clipPath: `inset(0)` }
+                    ],
+                    { duration: 600, fill: "forwards", easing: "ease-in-out" }
+                );
+            }, 600);
+        }
+
 
         img.style.opacity = "0";
         for (let imgSel = 0; imgSel < images.length; imgSel++) {
@@ -81,16 +107,8 @@ for (const i in images) {
                 { duration: 1200, fill: "forwards", easing: "ease-in-out" }
             );
         }
+
         setTimeout(() => {
-            textArea.style.display = "flex";
-            textDisplay.style.display = "block";
-            textArea.animate(
-                [
-                    { clipPath: `inset(100vh)` },
-                    { clipPath: `inset(0)` }
-                ],
-                { duration: 600, fill: "forwards", easing: "ease-in-out" }
-            );
             imageFixedClickAllow = true;
         }, 600);
     }
@@ -99,18 +117,11 @@ for (const i in images) {
 imageFixed.onclick = function () {
     if (!imageFixedClickAllow) { return; }
     imageFixedClickAllow = false;
-    textArea.animate(
-        [
-            { clipPath: `inset(0)` },
-            { clipPath: `inset(100vh)` }
-        ],
-        { duration: 600, fill: "forwards", easing: "ease-in-out" }
-    );
 
-    setTimeout(() => {
+    if (urlParams.get('gallery')==1){
         imageFixed.animate(
             [
-                { height: "100vh", width: "50vw", top: "0", left: "0", objectPosition: `0% 50%` },
+                { height: "100vh", width: "100vw", top: "0", left: "0", objectPosition: `0% 50%` },
                 { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%` }
             ],
             { duration: 600, fill: "forwards", easing: "ease-in-out" }
@@ -122,28 +133,71 @@ imageFixed.onclick = function () {
             ],
             { duration: 600, fill: "forwards", easing: "ease-in-out" }
         );
-    }, 600);
-
-    setTimeout(() => {
-        container.style.display = "none";
-        textArea.style.display = "none";
-        textDisplay.style.display = "none";
-        for (let imgSel = 0; imgSel < images.length; imgSel++) {
-            images[imgSel].animate(
+        setTimeout(() => {
+            container.style.display = "none";
+            textArea.style.display = "none";
+            textDisplay.style.display = "none";
+            for (let imgSel = 0; imgSel < images.length; imgSel++) {
+                images[imgSel].animate(
+                    [
+                        { transform: `translate(${imgSel < currentImg ? -1000 : 1000}%, 0%` },
+                        { transform: `translate(0%, 0%)` }
+                    ],
+                    { duration: 600, fill: "forwards", easing: "ease-in-out" }
+                )
+            }
+        }, 600);
+    
+        setTimeout(() => {
+            images[currentImg].style.opacity = "1";
+            imageFixed.style.display = "none";
+            sliderMoveAllow = true;
+        }, 1200);
+    } else {
+        textArea.animate(
+            [
+                { clipPath: `inset(0)` },
+                { clipPath: `inset(100vh)` }
+            ],
+            { duration: 600, fill: "forwards", easing: "ease-in-out" }
+        );
+        setTimeout(() => {
+            imageFixed.animate(
                 [
-                    { transform: `translate(${imgSel < currentImg ? -1000 : 1000}%, 0%` },
-                    { transform: `translate(0%, 0%)` }
+                    { height: "100vh", width: "50vw", top: "0", left: "0", objectPosition: `0% 50%` },
+                    { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin", objectPosition: `${mouseMoved}% 50%` }
                 ],
                 { duration: 600, fill: "forwards", easing: "ease-in-out" }
-            )
-        }
-    }, 1200);
-
-    setTimeout(() => {
-        images[currentImg].style.opacity = "1";
-        imageFixed.style.display = "none";
-        sliderMoveAllow = true;
-    }, 1800);
+            );
+            container.animate(
+                [
+                    { width: "100vw", height: "100vh", top: "0", left: "0" },
+                    { top: `${originalPos.top}px`, left: `${originalPos.left}px`, width: "40vmin", height: "60vmin" }
+                ],
+                { duration: 600, fill: "forwards", easing: "ease-in-out" }
+            );
+        }, 600);
+        setTimeout(() => {
+            container.style.display = "none";
+            textArea.style.display = "none";
+            textDisplay.style.display = "none";
+            for (let imgSel = 0; imgSel < images.length; imgSel++) {
+                images[imgSel].animate(
+                    [
+                        { transform: `translate(${imgSel < currentImg ? -1000 : 1000}%, 0%` },
+                        { transform: `translate(0%, 0%)` }
+                    ],
+                    { duration: 600, fill: "forwards", easing: "ease-in-out" }
+                )
+            }
+        }, 1200);
+    
+        setTimeout(() => {
+            images[currentImg].style.opacity = "1";
+            imageFixed.style.display = "none";
+            sliderMoveAllow = true;
+        }, 1800);
+    }
 }
 
 window.onmousedown = e => {
